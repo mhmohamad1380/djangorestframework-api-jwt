@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python3 manage.py makemigrations --noinput &&
+             while ! python3 manage.py migrate --noinput ; do sleep 1 ; done && 
+             python3 manage.py createsuperuser --user admin --noinput --email admin@admin.com --noinput ;
+             python3 manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=postgresqlpassword
+
+  db:
+    image: postgres:latest
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgresqlpassword
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+  celery:
+    restart: always
+    build: ./app
+    command: celery -A django_rest_jwt worker -l INFO
+    depends_on:
+      - db
+      - redis
+      - app
