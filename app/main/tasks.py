@@ -1,11 +1,13 @@
 from celery import shared_task
-from django.core.mail import send_mail
+from templated_mail.mail import BaseEmailMessage
 
 @shared_task
 def send_mail_for_new_posts(post_title,emails):
     
-    send_mail("a new Post has been Created",
-                f"a new Post has been Created with title: {post_title}",
-                "from@madmail.com",
-                emails
-                )
+    message = BaseEmailMessage(
+        template_name="emails/new_product.html",
+        context = {
+            "product_title":post_title
+        }
+    )
+    message.send(emails)

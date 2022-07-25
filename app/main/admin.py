@@ -11,6 +11,7 @@ class ShopsPicturesInline(admin.TabularInline):
         if instance.picture.name != "":
             return format_html(f"<img src='{instance.picture.url}' class='thumbnail'/>")
         return ''
+        
     def imgsize(self,instance):
         if instance.picture.name != "":
             return f"{int(instance.picture.size / 1024)} KB"
