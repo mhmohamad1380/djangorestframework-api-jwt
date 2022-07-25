@@ -27,10 +27,3 @@ class FoodAdmin(admin.ModelAdmin):
             "all": ["styles.css"]
         }
 
-@admin.register(FoodsPictures)
-class FoodsPicturesAdmin(admin.ModelAdmin):
-    list_display = ["food" ,"picture",]
-
-@admin.register(Email)
-class EmailAdmin(admin.ModelAdmin):
-    pass
