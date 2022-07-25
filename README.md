@@ -10,5 +10,12 @@
 4. then, type ```docker-compose up --build ``` and Press Enter. (tip: make sure that Docker and Docker-Compose is Installed on Your Machine)
 5. tip: username is ``` admin ``` and password is ``` admin ```
 
+## Routes
+
+1. ```api/shop/list``` Provides a List of Shop Items <br/>
+2. ```api/foods/retrieve-destroy/<pk>``` for getting an Item and Destoy it or Not <br/>
+3. ```api/token/``` send a POST method to this page and send username and password to get a Token <br/>
+4. ```api/token/refresh/``` send a POST method to this page and send refresh token to get a New Token <br/>
+
 
 ### Good Luck
