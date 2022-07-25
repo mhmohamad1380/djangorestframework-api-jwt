@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from main.models import Email, Food, FoodsPictures
+from main.models import Email, Shop, ShopPictures
 from django.utils.html import format_html
 
-class FoodsPicturesInline(admin.TabularInline):
-    model = FoodsPictures
+class ShopsPicturesInline(admin.TabularInline):
+    model = ShopPictures
     readonly_fields = ["thumbnail", "imgsize"]
 
     def thumbnail(self,instance):
@@ -18,9 +18,9 @@ class FoodsPicturesInline(admin.TabularInline):
 
 
 
-@admin.register(Food)
-class FoodAdmin(admin.ModelAdmin):
-    inlines = [FoodsPicturesInline,]
+@admin.register(Shop)
+class ShopAdmin(admin.ModelAdmin):
+    inlines = [ShopsPicturesInline,]
 
     class Media:
         css = {

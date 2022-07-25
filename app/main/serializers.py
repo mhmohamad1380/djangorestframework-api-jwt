@@ -1,20 +1,20 @@
 from dataclasses import fields
 from rest_framework import serializers
-from .models import Food, FoodsPictures
+from .models import Shop, ShopPictures
 
-class FoodsPicturesSerializer(serializers.ModelSerializer):
+class ShopsPicturesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FoodsPictures
+        model = ShopPictures
         fields = ["picture"]
 
 
-class FoodsSerializer(serializers.HyperlinkedModelSerializer):
+class ShopsSerializer(serializers.HyperlinkedModelSerializer):
     pictures = serializers.SerializerMethodField()
     class Meta:
-        model = Food
+        model = Shop
         fields = ["id","title","description","pictures"]
     
     def get_pictures(self,obj):
-        selected_pictures = FoodsPictures.objects.filter(
-            food=obj).distinct()
-        return FoodsPicturesSerializer(selected_pictures, many=True).data
+        selected_pictures = ShopPictures.objects.filter(
+            shop=obj).distinct()
+        return ShopsPicturesSerializer(selected_pictures, many=True).data

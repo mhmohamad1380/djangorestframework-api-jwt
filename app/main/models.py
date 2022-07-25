@@ -6,7 +6,7 @@ from .tasks import send_mail_for_new_posts
 # Create your models here.
 
 
-class Food(models.Model):
+class Shop(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
 
@@ -14,28 +14,28 @@ class Food(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = "Food"
-        verbose_name_plural = "Foods"
+        verbose_name = "Shop"
+        verbose_name_plural = "Shops"
 
 
-class FoodsPictures(models.Model):
-    food = models.ForeignKey(to=Food, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to="foods", blank=False,
+class ShopPictures(models.Model):
+    shop = models.ForeignKey(to=Shop, on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to="shop/items", blank=False,
                                 # validators=[image_size_validator]
                                 )
 
     class Meta:
-        verbose_name = "FoodsPicture"
-        verbose_name_plural = "FoodsPictures"
+        verbose_name = "ShopsPicture"
+        verbose_name_plural = "ShopsPictures"
 
 
-@receiver(models.signals.pre_delete, sender=FoodsPictures)
+@receiver(models.signals.pre_delete, sender=ShopPictures)
 def delete_all_image_files(sender, instance, **kwargs):
-    food_relation = instance.food.id
+    shop_relation = instance.shop.id
     for image in sender.objects.all():
         if instance.picture:
             if os.path.isfile(image.picture.path):
-                if image.food.id == food_relation:
+                if image.shop.id == shop_relation:
                     os.remove(image.picture.path)
 
 
@@ -49,7 +49,7 @@ class Email(models.Model):
         verbose_name = "Email"
         verbose_name_plural = "Emails"
 
-@receiver(models.signals.post_save,sender=Food)
+@receiver(models.signals.post_save,sender=Shop)
 def send_mail(sender,instance,**kwargs):
     emails = list(email.email for email in Email.objects.all())
     send_mail_for_new_posts.delay(instance.title, emails)
