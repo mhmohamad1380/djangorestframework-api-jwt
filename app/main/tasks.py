@@ -10,4 +10,5 @@ def send_mail_for_new_posts(post_title,emails):
             "product_title":post_title
         }
     )
+    message.attach_file("./templates/emails/21.png")
     message.send(emails)

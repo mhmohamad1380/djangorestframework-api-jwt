@@ -21,7 +21,7 @@ class Shop(models.Model):
 class ShopPictures(models.Model):
     shop = models.ForeignKey(to=Shop, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to="shop/items", blank=False,
-                                # validators=[image_size_validator]
+                                validators=[image_size_validator]
                                 )
 
     class Meta:
